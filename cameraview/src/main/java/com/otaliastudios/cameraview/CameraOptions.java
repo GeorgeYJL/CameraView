@@ -52,6 +52,15 @@ public abstract class CameraOptions {
     protected float previewFrameRateMinValue;
     protected float previewFrameRateMaxValue;
 
+    protected boolean exposureTimeSetSupported;
+    protected long exposureTimeMinValue;
+    protected long exposureTimeMaxValue;
+    protected float minimumFocusDistance;
+    protected float maxFocusDistance;
+    protected boolean sensitivitySetSupported;
+    protected int sensitivityMinValue;
+    protected int sensitivityMaxValue;
+
     protected CameraOptions() { }
 
     /**
@@ -272,6 +281,37 @@ public abstract class CameraOptions {
         return exposureCorrectionSupported;
     }
 
+    public final boolean isExposureTimeSetSupported() {
+        return exposureTimeSetSupported;
+    }
+
+    public final long getExposureTimeMaxValue() {
+        return exposureTimeMaxValue;
+    }
+
+    public final long getExposureTimeMinValue() {
+        return exposureTimeMinValue;
+    }
+
+    public final boolean isSensitivitySetSupported() {
+        return sensitivitySetSupported;
+    }
+
+    public final int getSensitivityMaxValue() {
+        return sensitivityMaxValue;
+    }
+
+    public final int getSensitivityMinValue() {
+        return sensitivityMinValue;
+    }
+
+    public final float getMinimumFocusDistance() {
+        return minimumFocusDistance;
+    }
+
+    public final float getMaxFocusDistance() {
+        return maxFocusDistance;
+    }
     /**
      * The minimum value of negative exposure correction, in EV stops.
      * This is presumably negative or 0 if not supported.

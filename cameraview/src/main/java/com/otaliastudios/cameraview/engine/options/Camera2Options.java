@@ -108,6 +108,30 @@ public class Camera2Options extends CameraOptions {
         exposureCorrectionSupported = exposureCorrectionMinValue != 0
                 && exposureCorrectionMaxValue != 0;
 
+        // Exposure Time
+        Range<Long> exposureTimeRange = cameraCharacteristics.get(SENSOR_INFO_EXPOSURE_TIME_RANGE);
+        if (exposureTimeRange != null) {
+            exposureTimeMinValue = exposureTimeRange.getLower() ;
+            exposureTimeMaxValue = exposureTimeRange.getUpper();
+        }
+        exposureTimeSetSupported = exposureTimeMinValue != 0
+                && exposureTimeMaxValue != 0;
+
+        // focusSetSupport
+        minimumFocusDistance = cameraCharacteristics.get(LENS_INFO_MINIMUM_FOCUS_DISTANCE);
+        maxFocusDistance = cameraCharacteristics.get(LENS_INFO_HYPERFOCAL_DISTANCE);
+
+
+        // sensitivitySetSupported
+        Range<Integer> sensitivityRange = cameraCharacteristics.get(SENSOR_INFO_SENSITIVITY_RANGE);
+        if (sensitivityRange != null) {
+            sensitivityMinValue = sensitivityRange.getLower() ;
+            sensitivityMaxValue = sensitivityRange.getUpper() ;
+        }
+        sensitivitySetSupported = sensitivityMinValue != 0
+                && sensitivityMaxValue != 0;
+
+
 
         // Picture Sizes
         StreamConfigurationMap streamMap = cameraCharacteristics.get(

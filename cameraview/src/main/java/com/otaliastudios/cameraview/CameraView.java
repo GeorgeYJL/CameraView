@@ -1092,6 +1092,28 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
         }
     }
 
+
+    public float getExposureTime() {
+        return mCameraEngine.getExposureTimeValue();
+    }
+    public void setExposureTime(float ETvalue) {
+       mCameraEngine.setExposureTime(ETvalue, false);
+    }
+
+
+    public float getSensitivityValue() {
+        return mCameraEngine.getSensitivityValue();
+    }
+    public void setSensitivity(float ISOValue) {
+        mCameraEngine.setSensitivity(ISOValue, false);
+    }
+
+    public float getFocusDistanceValue() {
+        return mCameraEngine.getFocusDistanceValue();
+    }
+    public void setFocusDistance(float focusDistance) {
+        mCameraEngine.setFocusDistance(focusDistance, false);
+    }
     /**
      * Returns the current exposure correction value, typically 0
      * at start-up.
@@ -2375,6 +2397,45 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
                 public void run() {
                     for (CameraListener listener : mListeners) {
                         listener.onExposureCorrectionChanged(newValue, bounds, fingers);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void dispatchOnExposureTimeChanged(final float newValue) {
+            LOG.i("dispatchOnExposureTimeChanged", newValue);
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (CameraListener listener : mListeners) {
+                        listener.onExposureTimeChanged(newValue);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void dispatchOnSensitivityChanged(final float newValue) {
+            LOG.i("dispatchOnISOChanged", newValue);
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (CameraListener listener : mListeners) {
+                        listener.onISOChanged(newValue);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void dispatchOnFocusDistanceChanged(final float newValue) {
+            LOG.i("dispatchOnFocusDistanceChanged", newValue);
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (CameraListener listener : mListeners) {
+                        listener.onFocusDistanceChanged(newValue);
                     }
                 }
             });

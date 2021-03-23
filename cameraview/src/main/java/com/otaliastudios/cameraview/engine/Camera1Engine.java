@@ -678,6 +678,22 @@ public class Camera1Engine extends CameraBaseEngine implements
         });
     }
 
+    @Override
+    public void setFocusDistance(float FDvalue, boolean notify) {
+
+    }
+
+    @Override
+    public void setSensitivity(float ISOvalue, boolean notify) {
+
+    }
+
+    @Override
+    public void setExposureTime(float ETvalue, boolean notify) {
+
+    }
+
+
     private boolean applyExposureCorrection(@NonNull Camera.Parameters params,
                                             float oldExposureCorrection) {
         if (mCameraOptions.isExposureCorrectionSupported()) {

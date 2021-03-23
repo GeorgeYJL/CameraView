@@ -134,6 +134,15 @@ public abstract class CameraListener {
                                             @Nullable PointF[] fingers) { }
 
 
+
+    @UiThread
+    public void onExposureTimeChanged(float newValue) { }
+
+    @UiThread
+    public void onISOChanged(float newValue) { }
+
+    @UiThread
+    public void onFocusDistanceChanged(float newValue) { }
     /**
      * Notifies that the actual video recording has started.
      * This is the time when actual frames recording starts.

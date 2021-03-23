@@ -50,6 +50,10 @@ public abstract class CameraBaseEngine extends CameraEngine {
     protected final static int ALLOWED_ZOOM_OPS = 20;
     protected final static int ALLOWED_EV_OPS = 20;
 
+    protected final static int ALLOWED_Sensitivity_OPS = 20;
+    protected final static int ALLOWED_FocusDistance_OPS = 20;
+    protected final static int ALLOWED_ExposureTime_OPS = 20;
+
     @SuppressWarnings("WeakerAccess") protected CameraPreview mPreview;
     @SuppressWarnings("WeakerAccess") protected CameraOptions mCameraOptions;
     @SuppressWarnings("WeakerAccess") protected PictureRecorder mPictureRecorder;
@@ -68,6 +72,10 @@ public abstract class CameraBaseEngine extends CameraEngine {
     @SuppressWarnings("WeakerAccess") protected Location mLocation;
     @SuppressWarnings("WeakerAccess") protected float mZoomValue;
     @SuppressWarnings("WeakerAccess") protected float mExposureCorrectionValue;
+    @SuppressWarnings("WeakerAccess") protected float mExposureTimeValue; //0~100.0
+    @SuppressWarnings("WeakerAccess") protected float mFocusDistanceValue; //0~100.0
+    @SuppressWarnings("WeakerAccess") protected float mSensitivityValue;//0~100.0
+
     @SuppressWarnings("WeakerAccess") protected boolean mPlaySounds;
     @SuppressWarnings("WeakerAccess") protected boolean mPictureMetering;
     @SuppressWarnings("WeakerAccess") protected boolean mPictureSnapshotMetering;
@@ -98,6 +106,12 @@ public abstract class CameraBaseEngine extends CameraEngine {
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mZoomTask
             = Tasks.forResult(null);
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mExposureCorrectionTask
+            = Tasks.forResult(null);
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mExposureTimeTask
+            = Tasks.forResult(null);
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mExposureFocusDistanceTask
+            = Tasks.forResult(null);
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mSensitivityTask
             = Tasks.forResult(null);
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mFlashTask
             = Tasks.forResult(null);
@@ -418,6 +432,18 @@ public abstract class CameraBaseEngine extends CameraEngine {
     @Override
     public final float getZoomValue() {
         return mZoomValue;
+    }
+    @Override
+    public final float getExposureTimeValue() {
+        return mExposureTimeValue;
+    }
+    @Override
+    public final float getFocusDistanceValue() {
+        return mFocusDistanceValue;
+    }
+    @Override
+    public final float getSensitivityValue() {
+        return mSensitivityValue;
     }
 
     @Override

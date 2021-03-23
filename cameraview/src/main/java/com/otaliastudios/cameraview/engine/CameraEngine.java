@@ -124,6 +124,11 @@ public abstract class CameraEngine implements
         void dispatchOnZoomChanged(final float newValue, @Nullable final PointF[] fingers);
         void dispatchOnExposureCorrectionChanged(float newValue, @NonNull float[] bounds,
                                                  @Nullable PointF[] fingers);
+
+        void dispatchOnExposureTimeChanged(float newValue);
+        void dispatchOnSensitivityChanged(float newValue);
+        void dispatchOnFocusDistanceChanged(float newValue);
+
         void dispatchFrame(@NonNull Frame frame);
         void dispatchError(CameraException exception);
         void dispatchOnVideoRecordingStart();
@@ -677,6 +682,19 @@ public abstract class CameraEngine implements
     public abstract void setExposureCorrection(float EVvalue, @NonNull float[] bounds,
                                                @Nullable PointF[] points, boolean notify);
     public abstract float getExposureCorrectionValue();
+
+    //焦距
+    public abstract void setFocusDistance(float FDvalue, boolean notify);
+    public abstract float getFocusDistanceValue();
+
+    //ISO
+    public abstract void setSensitivity(float ISOvalue, boolean notify);
+    public abstract float getSensitivityValue();
+
+    //快门 曝光时间
+    public abstract void setExposureTime(float ETvalue, boolean notify);
+    public abstract float getExposureTimeValue();
+
 
     public abstract void setFlash(@NonNull Flash flash);
     @NonNull public abstract Flash getFlash();

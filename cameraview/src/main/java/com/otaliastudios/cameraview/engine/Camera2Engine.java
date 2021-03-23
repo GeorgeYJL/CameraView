@@ -1333,6 +1333,142 @@ public class Camera2Engine extends CameraBaseEngine implements
         });
     }
 
+    @Override
+    public void setFocusDistance(final float FDvalue, final boolean notify) {
+        final float old = mFocusDistanceValue;
+        mFocusDistanceValue = FDvalue;
+        // EV requests can be high frequency (e.g. linked to touch events), let's trim the oldest.
+        getOrchestrator().trim("focus Distance", ALLOWED_FocusDistance_OPS);
+        mExposureFocusDistanceTask = getOrchestrator().scheduleStateful(
+                "focus Distance",
+                CameraState.ENGINE,
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (applyFocusDistance(mRepeatingRequestBuilder, old)) {
+                            applyRepeatingRequestBuilder();
+                            if (notify) {
+                                getCallback().dispatchOnFocusDistanceChanged(FDvalue);
+                            }
+                        }
+                    }
+                });
+    }
+
+
+
+    @Override
+    public void setSensitivity(final float ISOvalue, final boolean notify) {
+        final float old = mSensitivityValue;
+        mSensitivityValue = ISOvalue;
+        // EV requests can be high frequency (e.g. linked to touch events), let's trim the oldest.
+        getOrchestrator().trim("Sensitivity Value", ALLOWED_Sensitivity_OPS);
+        mSensitivityTask = getOrchestrator().scheduleStateful(
+                "Sensitivity Value",
+                CameraState.ENGINE,
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (applySensitivity(mRepeatingRequestBuilder, old)) {
+                            applyRepeatingRequestBuilder();
+                            if (notify) {
+                                getCallback().dispatchOnSensitivityChanged(ISOvalue);
+                            }
+                        }
+                    }
+                });
+    }
+
+
+    @Override
+    public void setExposureTime(final float ETvalue,final boolean notify) {
+        final float old = mExposureTimeValue;
+        mExposureTimeValue = ETvalue;
+        // EV requests can be high frequency (e.g. linked to touch events), let's trim the oldest.
+        getOrchestrator().trim("exposure time", ALLOWED_ExposureTime_OPS);
+        mExposureCorrectionTask = getOrchestrator().scheduleStateful(
+                "exposure time",
+                CameraState.ENGINE,
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (applyExposureTime(mRepeatingRequestBuilder, old)) {
+                            applyRepeatingRequestBuilder();
+                            if (notify) {
+                                getCallback().dispatchOnExposureTimeChanged(ETvalue);
+                            }
+                        }
+                    }
+                });
+    }
+
+
+
+    @SuppressWarnings("WeakerAccess")
+    protected boolean applyExposureTime(@NonNull CaptureRequest.Builder builder,
+                                              float oldEVvalue) {
+        if (mCameraOptions.isExposureTimeSetSupported()) {
+            long max=mCameraOptions.getExposureTimeMaxValue();
+            long min = mCameraOptions.getExposureTimeMinValue();
+
+            long exposureTime = (max-min)*(int)mExposureTimeValue/100 +min;
+            LOG.w("applyExposureTime:", "max= "+max + " min= "+min+"exposureTime"+exposureTime);
+            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, exposureTime);
+            return true;
+        }
+        mExposureTimeValue = oldEVvalue;
+        return false;
+    }
+    @SuppressWarnings("WeakerAccess")
+    protected boolean applyFocusDistance(@NonNull CaptureRequest.Builder builder,
+                                              float oldValue) {
+        Float nearest = mCameraOptions.getMinimumFocusDistance();
+        Float hyperfocal = mCameraOptions.getMaxFocusDistance();
+        if (nearest != null&& hyperfocal!=null) {
+
+            // From the android documentation:
+            //
+            // 0.0f represents farthest focus, and LENS_INFO_MINIMUM_FOCUS_DISTANCE
+            // represents the nearest focus the device can achieve.
+            //
+            // Example:
+            //
+            // Infinity    Hyperfocal                 Minimum   Camera
+            //  <----------|-----------------------------|         |
+            // [0.0]     [0.31]                       [14.29]
+            float num;
+            if(nearest>hyperfocal){
+                num =  (nearest-hyperfocal)*mFocusDistanceValue/100;
+            }else{
+                num =  (hyperfocal-nearest)*mFocusDistanceValue/100;
+            }
+
+
+            LOG.w("applyFocusDistance:", "nearest=" +nearest + "hyperfocal= "+hyperfocal +"value="+num);
+            builder.set(CaptureRequest.LENS_FOCUS_DISTANCE, num);
+            return true;
+        }
+        mFocusDistanceValue = oldValue;
+        return false;
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    protected boolean applySensitivity(@NonNull CaptureRequest.Builder builder,
+                                              float oldEVvalue) {
+        if (mCameraOptions.isSensitivitySetSupported()) {
+            int max = mCameraOptions.getSensitivityMaxValue();
+            int min = mCameraOptions.getSensitivityMinValue();
+
+
+            int isoValue = (max-min)*(int)mSensitivityValue/100 +min;
+            LOG.w("applySensitivity:", "max= "+max + " min= "+min+"isoValue"+isoValue);
+
+            builder.set(CaptureRequest.SENSOR_SENSITIVITY, isoValue);
+            return true;
+        }
+        mSensitivityValue = oldEVvalue;
+        return false;
+    }
     @SuppressWarnings("WeakerAccess")
     protected boolean applyExposureCorrection(@NonNull CaptureRequest.Builder builder,
                                               float oldEVvalue) {
