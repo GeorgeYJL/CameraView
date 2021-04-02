@@ -695,6 +695,13 @@ public abstract class CameraEngine implements
     public abstract void setExposureTime(float ETvalue, boolean notify);
     public abstract float getExposureTimeValue();
 
+    //设置 AE Mode
+    public abstract void setAEMode(boolean aeMode);
+    public abstract boolean getAEMode();
+
+    //设置 AF Mode
+    public abstract void setAFMode(boolean aeMode);
+    public abstract boolean getAFMode();
 
     public abstract void setFlash(@NonNull Flash flash);
     @NonNull public abstract Flash getFlash();

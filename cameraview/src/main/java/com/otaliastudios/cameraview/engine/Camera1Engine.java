@@ -693,6 +693,20 @@ public class Camera1Engine extends CameraBaseEngine implements
 
     }
 
+    @Override
+    public void setAEMode(boolean aeMode) {
+
+    }
+
+
+
+    @Override
+    public void setAFMode(boolean aeMode) {
+
+    }
+
+
+
 
     private boolean applyExposureCorrection(@NonNull Camera.Parameters params,
                                             float oldExposureCorrection) {

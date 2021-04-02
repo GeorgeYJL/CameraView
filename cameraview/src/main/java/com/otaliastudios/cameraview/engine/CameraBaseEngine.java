@@ -75,7 +75,8 @@ public abstract class CameraBaseEngine extends CameraEngine {
     @SuppressWarnings("WeakerAccess") protected float mExposureTimeValue; //0~100.0
     @SuppressWarnings("WeakerAccess") protected float mFocusDistanceValue; //0~100.0
     @SuppressWarnings("WeakerAccess") protected float mSensitivityValue;//0~100.0
-
+    @SuppressWarnings("WeakerAccess") protected boolean mAEModeValue;
+    @SuppressWarnings("WeakerAccess") protected boolean mAFModeValue;
     @SuppressWarnings("WeakerAccess") protected boolean mPlaySounds;
     @SuppressWarnings("WeakerAccess") protected boolean mPictureMetering;
     @SuppressWarnings("WeakerAccess") protected boolean mPictureSnapshotMetering;
@@ -108,6 +109,10 @@ public abstract class CameraBaseEngine extends CameraEngine {
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mExposureCorrectionTask
             = Tasks.forResult(null);
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mExposureTimeTask
+            = Tasks.forResult(null);
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mAEModeTask
+            = Tasks.forResult(null);
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mAFModeTask
             = Tasks.forResult(null);
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) Task<Void> mExposureFocusDistanceTask
             = Tasks.forResult(null);
@@ -444,6 +449,16 @@ public abstract class CameraBaseEngine extends CameraEngine {
     @Override
     public final float getSensitivityValue() {
         return mSensitivityValue;
+    }
+
+
+    @Override
+    public final boolean getAEMode() {
+        return mAEModeValue;
+    }
+    @Override
+    public final boolean getAFMode() {
+        return mAFModeValue;
     }
 
     @Override

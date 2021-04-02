@@ -11,6 +11,7 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
@@ -1386,7 +1387,7 @@ public class Camera2Engine extends CameraBaseEngine implements
         mExposureTimeValue = ETvalue;
         // EV requests can be high frequency (e.g. linked to touch events), let's trim the oldest.
         getOrchestrator().trim("exposure time", ALLOWED_ExposureTime_OPS);
-        mExposureCorrectionTask = getOrchestrator().scheduleStateful(
+        mExposureTimeTask = getOrchestrator().scheduleStateful(
                 "exposure time",
                 CameraState.ENGINE,
                 new Runnable() {
@@ -1402,6 +1403,60 @@ public class Camera2Engine extends CameraBaseEngine implements
                 });
     }
 
+    @SuppressWarnings("WeakerAccess")
+    protected boolean applyAEMode(@NonNull CaptureRequest.Builder builder, @NonNull boolean AEMode) {
+        if (AEMode) {
+            builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON);
+            return true;
+        }else{
+            builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_OFF);
+//            builder.set(CaptureRequest.CONTROL_AE, CameraMetadata.CONTROL_AE_MODE_OFF);
+
+            return true;
+        }
+
+    }
+    @Override
+    public void setAEMode(final boolean aeMode) {
+        mAEModeValue = aeMode;
+        mAEModeTask = getOrchestrator().scheduleStateful("AE (" + aeMode + ")",
+                CameraState.ENGINE,
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (applyAEMode(mRepeatingRequestBuilder, aeMode)) {
+                            applyRepeatingRequestBuilder();
+                        }
+                    }
+                });
+    }
+    @SuppressWarnings("WeakerAccess")
+    protected boolean applyAFMode(@NonNull CaptureRequest.Builder builder, @NonNull boolean AFMode) {
+        if (AFMode) {
+            builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_AUTO);
+            return true;
+        }else{
+            builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF);
+            return true;
+        }
+    }
+
+    @Override
+    public void setAFMode(final boolean AFMode) {
+        mAFModeValue = AFMode;
+        mAFModeTask = getOrchestrator().scheduleStateful("AF (" + AFMode + ")",
+                CameraState.ENGINE,
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (applyAFMode(mRepeatingRequestBuilder, AFMode)) {
+                            applyRepeatingRequestBuilder();
+                        }
+                    }
+                });
+    }
+
+
 
 
     @SuppressWarnings("WeakerAccess")
@@ -1413,6 +1468,10 @@ public class Camera2Engine extends CameraBaseEngine implements
 
             long exposureTime = (max-min)*(int)mExposureTimeValue/100 +min;
             LOG.w("applyExposureTime:", "max= "+max + " min= "+min+"exposureTime"+exposureTime);
+            //turn off AE MODE
+            builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_OFF);
+            mAEModeValue = false;
+
             builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, exposureTime);
             return true;
         }
@@ -1444,6 +1503,10 @@ public class Camera2Engine extends CameraBaseEngine implements
             }
 
 
+            //turn off AF MODE
+            builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF);
+            mAFModeValue = false;
+
             LOG.w("applyFocusDistance:", "nearest=" +nearest + "hyperfocal= "+hyperfocal +"value="+num);
             builder.set(CaptureRequest.LENS_FOCUS_DISTANCE, num);
             return true;
@@ -1463,6 +1526,9 @@ public class Camera2Engine extends CameraBaseEngine implements
             int isoValue = (max-min)*(int)mSensitivityValue/100 +min;
             LOG.w("applySensitivity:", "max= "+max + " min= "+min+"isoValue"+isoValue);
 
+//            turn off AE MODE
+            builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_OFF);
+            mAEModeValue = false;
             builder.set(CaptureRequest.SENSOR_SENSITIVITY, isoValue);
             return true;
         }
@@ -1473,6 +1539,8 @@ public class Camera2Engine extends CameraBaseEngine implements
     protected boolean applyExposureCorrection(@NonNull CaptureRequest.Builder builder,
                                               float oldEVvalue) {
         if (mCameraOptions.isExposureCorrectionSupported()) {
+            builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON);
+
             Rational exposureCorrectionStep = readCharacteristic(
                     CameraCharacteristics.CONTROL_AE_COMPENSATION_STEP,
                     new Rational(1, 1));

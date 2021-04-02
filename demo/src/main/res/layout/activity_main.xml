@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="88dp"
+        android:keepScreenOn="true"
+        app:cameraExperimental="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+
+    </com.otaliastudios.cameraview.CameraView>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Camera:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/takePicture"
+        android:layout_width="61dp"
+        android:layout_height="61dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/camera"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_photo" />
+
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/setWB_btn"
+            android:layout_width="60dp"
+            android:layout_height="56dp"
+            android:elevation="3dp"
+            android:text="WB" />
+
+
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/setFocus_btn"
+                android:layout_width="60dp"
+                android:layout_height="56dp"
+                android:elevation="3dp"
+                android:text="F" />
+            <SeekBar
+                android:id="@+id/focusSeekBar"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/setET_btn"
+                android:layout_width="60dp"
+                android:layout_height="56dp"
+                android:elevation="3dp"
+                android:text="S" />
+            <SeekBar
+                android:id="@+id/etSeekBar"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/setISO_btn"
+                android:layout_width="60dp"
+                android:layout_height="56dp"
+                android:elevation="3dp"
+                android:text="ISO" />
+            <SeekBar
+                android:id="@+id/isoSeekBar"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/setEV_btn"
+                android:layout_width="60dp"
+                android:layout_height="56dp"
+                android:elevation="3dp"
+                android:text="EV" />
+            <SeekBar
+                android:id="@+id/evSeekBar"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/setFlash_btn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:elevation="3dp"
+            android:text="Flash" />
+
+        <Button
+            android:id="@+id/setHDR_btn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:elevation="3dp"
+            android:text="HDR" />
+
+        <Button
+            android:id="@+id/setRAW_btn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:elevation="3dp"
+            android:text="RAW" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

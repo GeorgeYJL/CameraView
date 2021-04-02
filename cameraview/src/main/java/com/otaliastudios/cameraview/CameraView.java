@@ -1114,6 +1114,19 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
     public void setFocusDistance(float focusDistance) {
         mCameraEngine.setFocusDistance(focusDistance, false);
     }
+
+    public boolean getAFMode() {
+        return mCameraEngine.getAFMode();
+    }
+    public void setAFMode(boolean AFMode) {
+        mCameraEngine.setAFMode(AFMode);
+    }
+    public boolean getAEMode() {
+        return mCameraEngine.getAEMode();
+    }
+    public void setAEMode(boolean aeMode) {
+        mCameraEngine.setAEMode(aeMode);
+    }
     /**
      * Returns the current exposure correction value, typically 0
      * at start-up.

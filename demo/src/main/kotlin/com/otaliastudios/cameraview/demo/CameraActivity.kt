@@ -32,7 +32,7 @@ class CameraActivity : AppCompatActivity(), View.OnClickListener, OptionView.Cal
         private const val DECODE_BITMAP = false
     }
 
-    private val camera: CameraView by lazy { findViewById(R.id.camera) }
+    private val camera: CameraView by lazy { findViewById(R.id.camera1) }
     private val controlPanel: ViewGroup by lazy { findViewById(R.id.controls) }
     private var captureTime: Long = 0
 
@@ -289,11 +289,28 @@ class CameraActivity : AppCompatActivity(), View.OnClickListener, OptionView.Cal
     }
 
     private fun toggleCamera() {
-        if (camera.isTakingPicture || camera.isTakingVideo) return
-        when (camera.toggleFacing()) {
-            Facing.BACK -> message("Switched to back camera!", false)
-            Facing.FRONT -> message("Switched to front camera!", false)
-        }
+//        if (camera.isTakingPicture || camera.isTakingVideo) return
+//        when (camera.toggleFacing()) {
+//            Facing.BACK -> message("Switched to back camera!", false)
+//            Facing.FRONT -> message("Switched to front camera!", false)
+//        }
+
+
+
+//        camera.setExposureCorrection(90.0f);
+//        message("exposureCorrection"+camera.exposureCorrection, true);
+
+
+        camera.setFocusDistance(92.0f);
+        message("focusDistanceValue"+camera.focusDistanceValue, true);
+
+//        message("exposureTime"+camera.exposureTime, true);
+//
+//        camera.setExposureTime(90.0f);
+
+//        message("sensitivityValue"+camera.sensitivityValue, true);
+//
+//        camera.setSensitivity(90.0f);
     }
 
     private fun changeCurrentFilter() {
